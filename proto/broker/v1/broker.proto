@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package broker.v1;
+
+option go_package = "broker/proto/gen;brokerv1";
+
+// BrokerService is the backend-facing API (service-to-service).
+// Auth: metadata "authorization: Bearer <service-JWT>" (role=backend).
+service BrokerService {
+  // Publish broadcasts an event to a channel (same path as a client publish).
+  rpc Publish(PublishRequest) returns (PublishResponse);
+
+  // SubscribeStream server-streams events for a channel.
+  rpc SubscribeStream(SubscribeRequest) returns (stream Event);
+
+  // Presence returns live connection IDs for a channel.
+  rpc Presence(PresenceRequest) returns (PresenceResponse);
+}
+
+message PublishRequest {
+  string channel = 1;
+  // JSON-encoded payload (validated size by broker limits).
+  bytes payload = 2;
+}
+
+message PublishResponse {
+  bool ok = 1;
+}
+
+message SubscribeRequest {
+  string channel = 1;
+  // Replay events after this unix-ms timestamp (0 = only live).
+  int64 since = 2;
+}
+
+message PresenceRequest {
+  string channel = 1;
+}
+
+message PresenceResponse {
+  int32 count = 1;
+  repeated string members = 2;
+}
+
+message Event {
+  string channel = 1;
+  bytes payload = 2;
+  int64 ts = 3;
+}

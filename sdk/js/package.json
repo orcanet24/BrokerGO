@@ -1,0 +1,22 @@
+{
+  "name": "@broker/client",
+  "version": "0.1.0",
+  "description": "WebSocket SDK for the Broker realtime server",
+  "type": "module",
+  "main": "broker.js",
+  "exports": {
+    ".": "./broker.js"
+  },
+  "files": [
+    "broker.js",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "license": "MIT",
+  "keywords": [
+    "websocket",
+    "realtime",
+    "pubsub",
+    "broker"
+  ]
+}
